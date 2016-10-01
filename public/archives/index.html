@@ -105,7 +105,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud">
-						<a href="/tags/iOS/" style="font-size: 20.00px;">iOS</a><a href="/tags/随笔/" style="font-size: 10.00px;">随笔</a>
+						<a href="/tags/Swift/" style="font-size: 10.00px;">Swift</a><a href="/tags/iOS/" style="font-size: 20.00px;">iOS</a><a href="/tags/随笔/" style="font-size: 10.00px;">随笔</a>
 					</div>
 				</section>
 				
@@ -162,6 +162,133 @@
 	</div>
 </nav>
       
+  
+    <article id="post-Swift-API-Design-Guidelines中文" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/10/01/Swift-API-Design-Guidelines中文/" class="article-date">
+  	<time datetime="2016-10-01T14:30:29.000Z" itemprop="datePublished">Oct 1 2016</time>
+</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Swift/">Swift</a></li></ul>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/01/Swift-API-Design-Guidelines中文/">Swift API Design Guidelines中文</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="原则"><strong>原则</strong></h2>
+<p>在使用时的语义清楚为第一要素<br>语义清楚比简洁更重要</p>
+<h2 id="命名">命名</h2>
+<h3 id="增强使用时的语义">增强使用时的语义</h3>
+<h4 id="加上所有能消除歧义并增加可读性的词汇">加上所有能消除歧义并增加可读性的词汇</h4>
+<blockquote>
+<p>例如：<br>public mutating func remove(at position: Index) -&gt; Element<br>employees.remove(at: x)<br><code>at</code> 提高了可读性和增强意图</p>
+</blockquote>
+<h4 id="去除累赘、并不能增强可读性的词，尤其那些只是重复描述了参数类型的词">去除累赘、并不能增强可读性的词，尤其那些只是重复描述了参数类型的词</h4>
+<blockquote>
+<p>例如：<br>removeElement(<em> member: Element) -&gt; Element?<br>应该去掉Element：remove(</em> member: Element) -&gt; Element?</p>
+</blockquote>
+<h4 id="变量、参数、associated_types的命名，描述它们的角色，而不是类型">变量、参数、associated types的命名，描述它们的角色，而不是类型</h4>
+<blockquote>
+<p>例如：<br>restock(from widgetFactory: WidgetFactory)<br>应该是：restock(from supplier: WidgetFactory)</p>
+</blockquote>
+<h4 id="对于类型信息不能明确表达意图的类型，例如NSObject,_Any,_AnyObject,_Int,_String，加上弱的类型描述信息来增强可读性。">对于类型信息不能明确表达意图的类型，例如NSObject, Any, AnyObject, Int, String，加上弱的类型描述信息来增强可读性。</h4>
+<blockquote>
+<p>例如：<br>func add(<em> observer: NSObject, for keyPath: String)<br>grid.add(self, for: graphics)   // 语义不清<br>应该是：<br>func addObserver(</em> observer: NSObject, forKeyPath path: String)<br>grid.addObserver(self, forKeyPath: graphics)  // 清楚</p>
+</blockquote>
+<h3 id="让用起来语义更流畅">让用起来语义更流畅</h3>
+<h4 id="让方法和函数的命名在使用时读起来符合英文的语法规则">让方法和函数的命名在使用时读起来符合英文的语法规则</h4>
+<blockquote>
+<p>例如：<br>x.insert(y, at: z)                         “x, insert y at z”<br>x.subViews(havingColor: y)      “x’s subviews having color y”<br>x.capitalizingNouns()                “x, capitalizing nouns”</p>
+</blockquote>
+<h4 id="工厂类方法名以make开头">工厂类方法名以make开头</h4>
+<blockquote>
+<p>例如：x.makeIterator()</p>
+</blockquote>
+<h4 id="初始化和工厂方法名不应该包含第一个参数标签名，保持初始化方法参数结构独立性。">初始化和工厂方法名不应该包含第一个参数标签名，保持初始化方法参数结构独立性。</h4>
+<blockquote>
+<p>例如：<br>x.makeWidget(count: 47)<br>Color(red: 32, green: 64, blue: 128)<br>factory.makeWidget(gears: 42, spindles: 14)</p>
+</blockquote>
+<h4 id="方法或函数的命名应该能描述它的副作用性">方法或函数的命名应该能描述它的副作用性</h4>
+<ul>
+<li>没有副作用的，应该读起来为名词，例如：x.distance(to: y), i.successor()</li>
+<li>有副作用的，应该读起来为动词，例如：x.sort(), x.append(y)</li>
+</ul>
+<p>协议，用来描述是什么类型，应该读起来为名词，例如：Collection<br>协议，用户描述能做什么，应该使用后缀<code>able</code>、<code>ible</code>、<code>ing</code>，例如：Equatable，ProgressReporting<br> 类型、属性、变量和常量应该为名词</p>
+<h3 id="正确的使用专业术语">正确的使用专业术语</h3>
+<p>尽量避免使用令人费解的专业术语，仅非常必要时使用。<br>如果你一定要使用专业术语，用的时候要符合它的本意，不要用它来表达一个与术语本身含义有偏差的事物。<br>避免使用缩写，除非它是广为人知并能轻松在网上搜索到的。<br>使用已有的、被业界广泛使用和约定俗成的术语。</p>
+<blockquote>
+<p>例如：<br>使用术语Array来描述一组连续数据结构，而不是普通的List。<br>数学计算中，使用sin(x)，而不是自己为了表达这个意思琢磨出来的一个新词汇。</p>
+</blockquote>
+<h2 id="约定">约定</h2>
+<h3 id="常规约定">常规约定</h3>
+<p>对于时间复杂度不为O(1)的方法，要在文档中标明。<br>除非特殊情况，使用方法和属性而非全局函数。<br>遵循大小写约定，类型和协议大写驼峰命名，其他的全部小写驼峰命名<br>对于基本意思相同而参数类型不同的，使用多态来保持方法名相同。</p>
+<h3 id="参数">参数</h3>
+<h4 id="选择提高函数可读性的参数名">选择提高函数可读性的参数名</h4>
+<blockquote>
+<p>例如：<br>func move(from start: Point, to end: Point)</p>
+</blockquote>
+<h4 id="利用为参数提供默认值的便利">利用为参数提供默认值的便利</h4>
+<blockquote>
+<p>例如：<br>syncData(withCompletion: nil)  // 应该给参数提供nil的默认值<br>syncDate() // 有默认值</p>
+</blockquote>
+<h4 id="把有默认值的参数放在参数列表的尾部，来保证在省略了尾部参数后的语义连贯性。">把有默认值的参数放在参数列表的尾部，来保证在省略了尾部参数后的语义连贯性。</h4>
+<h3 id="标签">标签</h3>
+<h4 id="当参数不能被有效的描述和区分时，省略所有标签">当参数不能被有效的描述和区分时，省略所有标签</h4>
+<blockquote>
+<p>例如：<br>min(number1, number2)<br>zip(sequence1, sequence2)</p>
+</blockquote>
+<h4 id="当初始化方法是做值的类型转换，省略第一个参数标签">当初始化方法是做值的类型转换，省略第一个参数标签</h4>
+<blockquote>
+<p>例如：<br>Int64(someUInt32)</p>
+</blockquote>
+<h4 id="当第一个参数属于为语义的介词部分，将整个介词部分作为第一个参数标签">当第一个参数属于为语义的介词部分，将整个介词部分作为第一个参数标签</h4>
+<blockquote>
+<p>例如：<br>x.removeBoxes(havingLength: 12)</p>
+</blockquote>
+<p><strong><em>有一个例外，当前两个参数一起构成一种抽象的类型，第一个参数标签使用介词后面的部分（不包含介词本身），维持抽象类型的清晰性。</em></strong><br>例如：<br>a.move(toX: b, y: c)      // 破坏了后面抽象类型的清晰性<br>应该是：<br>a.moveTo(x: b, y: c)<br>a.fadeFrom(red: b, green: c, blue: d)</p>
+<h4 id="当第一个参数属于语法完整性的一部分，省略第一个标签">当第一个参数属于语法完整性的一部分，省略第一个标签</h4>
+<blockquote>
+<p>例如：<br>x.addSubview(y)     // vt + 宾语，语法完整<br><strong><em>上面的规则意味着，如果第一个参数不属于语法完整性的一部分，但是又需要它增加可读性时，那么应该使用标签。</em></strong><br>例如：<br>view.dismiss(animated: false)<br>words.split(maxSplits: 12)<br>students.sorted(isOrderedBefore: Student.name)<br>规律：动词都是vi不及物动词，第一个标签都仅仅为描述性词汇，不属于语法部分。</p>
+</blockquote>
+<h2 id="特殊说明">特殊说明</h2>
+<h4 id="给闭包和元组加上参数名字">给闭包和元组加上参数名字</h4>
+<h4 id="特别注意参数类型可能为Any，AnyObject等多态函数带来的歧义。">特别注意参数类型可能为Any，AnyObject等多态函数带来的歧义。</h4>
+<blockquote>
+<p>例如：<br>public mutating func append(<em> newElement: Element)<br>public mutating func append(</em> ndwEelements: S) where S.Generator.Element = Element<br>第二个方法本意是append一组数据，但如果Element为Any<br>values.append([2, 3, 4])到底是调用上面哪个方法呢？要避免这种歧义。</p>
+</blockquote>
+
+      
+    </div>
+    <footer class="article-footer">
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+
+
+
   
     <article id="post-View-Controller" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -388,7 +515,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2015 jackhub
+    		&copy; 2016 jackhub
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
